@@ -1,2 +1,2 @@
-# svelte-firebase-template-
+# svelte-firebase-template
 Template for Firebase using Svelte Framework.
