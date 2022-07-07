@@ -1,26 +1,24 @@
 <script lang="ts">
-    import Home from "./pages/home.svelte";
-    import Login from "./pages/login.svelte";
-    import Signup from "./pages/signup.svelte";
-    import Profile from "./pages/profile.svelte";
-    import Error from "./pages/error.svelte";
-
     if (location.hash.length == 0) location.hash = '/';
-    let route = location.hash;
 
-    window.onhashchange = () => {
-        route = location.hash;
+    interface Routes {
+        [route: string]: any;
     }
+
+    let current_route = location.hash.substring(1);
+    window.onhashchange = () => {
+        current_route = location.hash.substring(1);
+    }
+
+    export let routes: Routes = {};
 </script>
 
-{#if route == '#/' } 
-    <Home />
-{:else if route == '#/login'}
-    <Login />
-{:else if route == '#/signup'}
-    <Signup />
-{:else if route == '#/profile'}
-    <Profile />
-{:else}
-    <Error />
+{#each Object.entries(routes) as [_route, clazz]}
+    {#if current_route == _route}
+        <svelte:component this={clazz} />
+    {/if}
+{/each}
+
+{#if routes[current_route] == null}
+    <svelte:component this={routes['*']} />
 {/if}
